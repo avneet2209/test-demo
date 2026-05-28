@@ -1,2 +1,2 @@
 # test-demo
-for my own practice
+This is my first github repo.
