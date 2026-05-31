@@ -22,7 +22,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
-              \"path\": \"/Workspace/avneet09sidhu@gmail.com/my_first_notebook\",
+              \"path\": \"/Users/avneet09sidhu@gmail.com/my_first_notebook\",
               \"format\": \"SOURCE\",
               \"language\": \"PYTHON\",
               \"content\": \"$CONTENT\",
@@ -33,5 +33,5 @@ jobs:
         run: |
           curl --fail \
             -X GET \
-            "${{ secrets.DATABRICKS_HOST }}/api/2.0/workspace/get-status?path=/Workspace/Users/my_first_notebook" \
+            "${{ secrets.DATABRICKS_HOST }}/api/2.0/workspace/get-status?path=/Users/avneet09sidhu@gmail.com/my_first_notebook" \
             -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}"
