@@ -1,25 +1,37 @@
-name: My First Workflow
+name: Deploy to Databricks
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run a passing test
-        run: echo "tests passed!"
-
-      - name: Run a failing test
-        run: exit 1
-
-      - name: This will be skipped
-        run: echo "you will never see me"
-
   deploy:
     runs-on: ubuntu-latest
-    needs: test
+
     steps:
-      - name: Deploy
-        run: echo "deploying to Databricks!"
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Deploy notebook to Databricks
+        run: |
+          CONTENT=$(base64 -w 0 notebooks/my_first_notebook.py)
+
+          curl --fail \
+            -X POST \
+            "${{ secrets.DATABRICKS_HOST }}/api/2.0/workspace/import" \
+            -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"path\": \"/Workspace/Users/my_first_notebook\",
+              \"format\": \"SOURCE\",
+              \"language\": \"PYTHON\",
+              \"content\": \"$CONTENT\",
+              \"overwrite\": true
+            }"
+
+      - name: Verify notebook deployed
+        run: |
+          curl --fail \
+            -X GET \
+            "${{ secrets.DATABRICKS_HOST }}/api/2.0/workspace/get-status?path=/Workspace/Users/my_first_notebook" \
+            -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}"
