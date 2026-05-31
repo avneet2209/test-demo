@@ -5,21 +5,21 @@ on:
     branches: [ "main" ]
 
 jobs:
-  job-one:
+  test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout my repo
-        uses: actions/checkout@v3
+      - name: Run a passing test
+        run: echo "tests passed!"
 
-      - name: List files
-        run: ls -la
+      - name: Run a failing test
+        run: exit 1
 
-  job-two:
+      - name: This will be skipped
+        run: echo "you will never see me"
+
+  deploy:
     runs-on: ubuntu-latest
-    needs: job-one
+    needs: test
     steps:
-      - name: Checkout my repo
-        uses: actions/checkout@v3
-
-      - name: List files
-        run: ls -la
+      - name: Deploy
+        run: echo "deploying to Databricks!"
