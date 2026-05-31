@@ -14,3 +14,9 @@ jobs:
 
       - name: Run Python
         run: python3 -c "print('Hello from Python!')"
+
+      - name: Create a file
+        run: echo "this is my file" > test.txt
+
+      - name: Read that file
+        run: cat test.txt
