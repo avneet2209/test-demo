@@ -1,0 +1,4 @@
+# Databricks notebook source
+
+print("Hello from Databricks!")
+print("This notebook was deployed from GitHub Actions!")
