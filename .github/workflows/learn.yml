@@ -1,48 +1,16 @@
-# Step 4 — create a one-time job run
-      - name: Trigger notebook run
-        id: trigger_run
-        run: |
-          # Call the Jobs API to run the notebook immediately
-          RUN_ID=$(curl --fail \
-            -X POST \
-            "${{ secrets.DATABRICKS_HOST }}/api/2.1/jobs/runs/submit" \
-            -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            -d "{
-              \"run_name\": \"GitHub Actions Run\",
-              \"new_cluster\": {
-                \"num_workers\": 1,
-                \"spark_version\": \"13.3.x-scala2.12\",
-                \"node_type_id\": \"Standard_DS3_v2\"
-              },
-              \"notebook_task\": {
-                \"notebook_path\": \"/Workspace/Production/my_notebook\"
-              }
-            }" | python3 -c "import sys,json; print(json.load(sys.stdin)['run_id'])")
+name: My First Workflow
 
-          echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
-          echo "Triggered run with ID: $RUN_ID"
+on:
+  push:
+    branches: [ "main" ]
 
-      # Step 5 — wait for the job to finish and check result
-      - name: Wait for job to complete
-        run: |
-          while true; do
-            # Poll the run status every 15 seconds
-            STATE=$(curl --fail \
-              -X GET \
-              "${{ secrets.DATABRICKS_HOST }}/api/2.1/jobs/runs/get?run_id=$RUN_ID" \
-              -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
-              | python3 -c "import sys,json; print(json.load(sys.stdin)['state']['life_cycle_state'])")
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
 
-            echo "Current state: $STATE"
+    steps:
+      - name: Print a message
+        run: echo "Hello World!"
 
-            if [ "$STATE" = "TERMINATED" ]; then
-              echo "Job finished!"
-              break
-            elif [ "$STATE" = "INTERNAL_ERROR" ]; then
-              echo "Job failed!"
-              exit 1
-            fi
-
-            sleep 15
-          done
+      - name: Run Python
+        run: python3 -c "print('Hello from Python!')"
