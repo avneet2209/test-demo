@@ -22,7 +22,7 @@ jobs:
             -H "Authorization: Bearer ${{ secrets.DATABRICKS_TOKEN }}" \
             -H "Content-Type: application/json" \
             -d "{
-              \"path\": \"/Workspace/Users/my_first_notebook\",
+              \"path\": \"/Workspace/avneet09sidhu@gmail.com/my_first_notebook\",
               \"format\": \"SOURCE\",
               \"language\": \"PYTHON\",
               \"content\": \"$CONTENT\",
