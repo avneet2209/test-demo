@@ -8,18 +8,18 @@ jobs:
   job-one:
     runs-on: ubuntu-latest
     steps:
-      - name: First job running
-        run: echo "I am job one!"
+      - name: Checkout my repo
+        uses: actions/checkout@v3
 
-      - name: Create a file
-        run: echo "created by job one" > message.txt
+      - name: List files
+        run: ls -la
 
   job-two:
     runs-on: ubuntu-latest
     needs: job-one
     steps:
-      - name: Second job running
-        run: echo "I am job two! I waited for job one."
+      - name: Checkout my repo
+        uses: actions/checkout@v3
 
-      - name: Try to read job one's file
-        run: cat message.txt
+      - name: List files
+        run: ls -la
