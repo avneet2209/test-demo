@@ -8,15 +8,16 @@ jobs:
   say-hello:
     runs-on: ubuntu-latest
 
+    env:
+      MY_NAME: "Databricks Learner"
+      MY_CITY: "Ludhiana"
+
     steps:
       - name: Print a message
         run: echo "Hello World!"
 
-      - name: Run Python
-        run: python3 -c "print('Hello from Python!')"
+      - name: Use environment variable
+        run: echo "My name is $MY_NAME and I am from $MY_CITY"
 
-      - name: Create a file
-        run: echo "this is my file" > test.txt
-
-      - name: Read that file
-        run: cat test.txt
+      - name: Use a secret
+        run: echo "My secret value is ${{ secrets.MY_SECRET }}"
